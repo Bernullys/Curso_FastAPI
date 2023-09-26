@@ -8,7 +8,7 @@ movies = [
         "year": 1994,
         "director_name": "Bernardo",
         "imdbRating":8.3,
-        "genre":"Action"
+        "category":"Action"
     },
     {
         "id": 2,
@@ -16,7 +16,7 @@ movies = [
         "year": 1994,
         "director_name": "Bernardo",
         "imdbRating":8.3,
-        "genre":"Action"
+        "category":"Comedy"
     }
 ]
 
@@ -39,3 +39,7 @@ def get_movie(id: int):
         if item['id'] == id:
             return item
     return []
+
+@app.get('movies/', tags=['movies'])
+def get_movies_by_category(category: str, year: int):
+    return [item for item in movies if item['category'] == category]
