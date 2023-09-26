@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Body
 from fastapi.responses import HTMLResponse
+from fastapi.encoders import jsonable_encoder
 
 movies = [
     {
@@ -56,4 +57,15 @@ def create_movie(id: int = Body(), title: str = Body(), year: int = Body(), dire
             'category': category,
         }
     )
+    return movies
+
+@app.put('/movies/{id}',  tags=['movies'])
+def update_movie(id: int, title: str = Body(), year: int = Body(), director_name: str = Body(), imdbRating: float = Body(), category: str = Body()):
+    for item in movies:
+        if item["id"] == id:
+            item['title'] = title,
+            item['year'] = year,
+            item['director_name'] = director_name,
+            item['imdbRating'] = imdbRating,
+            item['category'] = category,
     return movies
