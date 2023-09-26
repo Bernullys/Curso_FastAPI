@@ -1,6 +1,16 @@
 from fastapi import FastAPI, Body
 from fastapi.responses import HTMLResponse
 from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
+from typing import Optional
+
+class Movie(BaseModel):
+    id: Optional[int] = None
+    title: str
+    year: int
+    director_name: str
+    imdbRating: float
+    category: str
 
 movies = [
     {
@@ -46,28 +56,19 @@ def get_movies_by_category(category: str, year: int):
     return [item for item in movies if item['category'] == category]
 
 @app.post('/movies', tags=['movies'])
-def create_movie(id: int = Body(), title: str = Body(), year: int = Body(), director_name: str = Body(), imdbRating: float = Body(), category: str = Body()):
-    movies.append(
-        {
-            'id': id,
-            'title': title,
-            'year': year,
-            'director_name': director_name,
-            'imdbRating': imdbRating,
-            'category': category,
-        }
-    )
+def create_movie(movie: Movie):
+    movies.append(movie)
     return movies
 
 @app.put('/movies/{id}',  tags=['movies'])
-def update_movie(id: int, title: str = Body(), year: int = Body(), director_name: str = Body(), imdbRating: float = Body(), category: str = Body()):
+def update_movie(id: int, movie: Movie):
     for item in movies:
         if item["id"] == id:
-            item['title'] = title,
-            item['year'] = year,
-            item['director_name'] = director_name,
-            item['imdbRating'] = imdbRating,
-            item['category'] = category,
+            item['title'] = movie.title
+            item['year'] = movie.year
+            item['director_name'] = movie.director_name
+            item['imdbRating'] = movie.imdbRating
+            item['category'] = movie.category
     return movies
 
 @app.delete('/movies/{id}',  tags=['movies'])

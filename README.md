@@ -17,3 +17,7 @@ GET
 POST
 PUT
 DELETE
+
+Esquemas:
+    Se utilizan con la libreria pydantic, para tener una clase con los keys y no pasarselos directamente a los parametros de las fuciones.
+    
