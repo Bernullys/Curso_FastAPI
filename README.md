@@ -15,5 +15,5 @@ GET
         Son una serie de clave valor para realizar busquedas
 
 POST
-
-    
+PUT
+DELETE
