@@ -1,21 +1,21 @@
 from fastapi import FastAPI, Body
 from fastapi.responses import HTMLResponse
 from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 class Movie(BaseModel):
     id: Optional[int] = None
-    title: str
-    year: int
-    director_name: str
+    title: str = Field(default="a movie", min_length=5, max_Length=20)
+    year: int = Field(default=2023, le=2025)
+    director_name: str = Field(default="a director", min_Length=5, max_Length=20)
     imdbRating: float
     category: str
 
 movies = [
     {
         "id": 1,
-        "title":"The Shawshank Redemption",
+        "title":"The Shawshank",
         "year": 1994,
         "director_name": "Bernardo",
         "imdbRating":8.3,
@@ -23,7 +23,7 @@ movies = [
     },
     {
         "id": 2,
-        "title":"The Shawshank Redemption",
+        "title":"Redemption",
         "year": 1994,
         "director_name": "Bernardo",
         "imdbRating":8.3,

@@ -20,4 +20,15 @@ DELETE
 
 Esquemas:
     Se utilizan con la libreria pydantic, para tener una clase con los keys y no pasarselos directamente a los parametros de las fuciones.
+
+Validación de datos:
+    Para que los datos introducidos cumplan con el tipo.
+    FastAPI genera algunas validaciones automaticamente (como tipo de dato).
+    Para agregar otras se importa Field
+
+    gt: greater than
+    ge: greater than or equal
+    lt: less than
+    le: less than or equal
     
+
