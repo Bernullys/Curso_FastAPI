@@ -40,3 +40,5 @@ Validación de Parametros:
 Tipos de respuestas:
     importar JSONResponse
 
+    Modelo de respuesta que vamos a obtener:
+        importar List
