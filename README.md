@@ -42,3 +42,6 @@ Tipos de respuestas:
 
     Modelo de respuesta que vamos a obtener:
         importar List
+
+Codigos de estados:
+    
