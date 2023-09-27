@@ -12,7 +12,7 @@ GET
         Como se reciben parametros por la ruta y como se filtran por id
 
     Parametros Query
-        Son una serie de clave valor para realizar busquedas
+        Son una serie de clave valor para realizar busquedas. Tenia un error de sintaxis.
 
 POST
 PUT
@@ -34,6 +34,9 @@ Validación de datos:
 Validación de Parametros:
     Parametros de ruta:
         importar Path
-
+    Parametros query:
+        importar Query
     
+Tipos de respuestas:
+    importar JSONResponse
 

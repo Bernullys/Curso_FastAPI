@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Body, Path, Query
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 from typing import Optional
@@ -55,23 +55,24 @@ def message():
 
 @app.get('/movies', tags=['movies'])
 def get_movies():
-    return movies
+    return JSONResponse(content=movies)
 
 @app.get('/movies/{id}', tags=['movies'])
 def get_movie(id: int= Path(ge=1, le=2000)):
     for item in movies:
         if item['id'] == id:
-            return item
-    return []
+            return JSONResponse(content=item)
+    return JSONResponse(content=[])
 
-@app.get('movies/', tags=['movies'])
-def get_movies_by_category(category: str = Query(min_length=5, max_length=10)):
-    return [item for item in movies if item['category'] == category]
+@app.get('/movies/', tags=['movies'])
+def get_movies_by_category(category: str = Query(min_length=5, max_length=15)):
+    data = [item for item in movies if item["category"] == category]
+    return JSONResponse(content=data)
 
 @app.post('/movies', tags=['movies'])
 def create_movie(movie: Movie):
     movies.append(movie)
-    return movies
+    return JSONResponse(content={"message": "Your movie has been registered"})
 
 @app.put('/movies/{id}',  tags=['movies'])
 def update_movie(id: int, movie: Movie):
@@ -82,11 +83,11 @@ def update_movie(id: int, movie: Movie):
             item['director_name'] = movie.director_name
             item['imdbRating'] = movie.imdbRating
             item['category'] = movie.category
-    return movies
+    return JSONResponse(content={"message": "Your movie has been modified"})
 
 @app.delete('/movies/{id}',  tags=['movies'])
 def delete_movie(id: int):
     for item in movies:
         if item['id'] == id:
             movies.remove(item)
-    return movies
+    return JSONResponse(content={"message": "Your movie has been deleted"})
