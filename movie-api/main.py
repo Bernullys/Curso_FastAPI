@@ -6,11 +6,24 @@ from typing import Optional
 
 class Movie(BaseModel):
     id: Optional[int] = None
-    title: str = Field(default="a movie", min_length=5, max_Length=20)
-    year: int = Field(default=2023, le=2025)
-    director_name: str = Field(default="a director", min_Length=5, max_Length=20)
-    imdbRating: float
-    category: str
+    title: str = Field(min_length=5, max_Length=30)
+    year: int = Field(le=2023)
+    director_name: str = Field(min_Length=5, max_Length=20)
+    imdbRating: float = Field(gt=0, le=10)
+    category: str = Field(min_length=1, max_length=10)
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "id":1,
+                "title":"a movie",
+                "year": 2023,
+                "director_name": "a director",
+                "imdbRating": 5.0,
+                "category": "cine"
+            }
+        }
+    }
 
 movies = [
     {
