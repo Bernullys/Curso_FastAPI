@@ -55,3 +55,5 @@ Flujo de autenticación:
         Al momento de que nuestra API reciba la pteción del usuario, comprobará que este le haya enviado el token y validará si es correcto y le pertenece. Finalmente se le dará acceso a la ruta que está solicitando.
 
     Generando tokens con pyjwt
+
+    Validando tokens
