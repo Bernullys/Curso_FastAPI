@@ -57,3 +57,6 @@ Flujo de autenticación:
     Generando tokens con pyjwt
 
     Validando tokens
+
+    Middlewares de autenticación
+        

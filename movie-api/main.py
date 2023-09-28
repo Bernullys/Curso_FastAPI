@@ -1,9 +1,21 @@
-from fastapi import FastAPI, Body, Path, Query
+from fastapi import FastAPI, Body, Path, Query, Request, HTTPException, Depends
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from jwt_manager import create_token
+from jwt_manager import create_token, validate_token
+from fastapi.security import HTTPBearer
+
+app = FastAPI()
+app.title = "My fisrt app with FastAPI"
+app.version = "0.0.1"
+
+class JWTBearer(HTTPBearer):
+    async def __call__(self, request: Request):
+        auth = await super().__call__(request)
+        data = validate_token(auth.credentials)
+        if data['email'] != "bernardo@gmail.com":
+            raise HTTPException(status_code=403, detail="Invalid credentials")
 
 class User(BaseModel):
     email: str
@@ -49,9 +61,7 @@ movies = [
     }
 ]
 
-app = FastAPI()
-app.title = "My fisrt app with FastAPI"
-app.version = "0.0.1"
+
 
 @app.get('/', tags=['home'])
 def message():
@@ -68,9 +78,13 @@ def login(user: User):
 
 
 
-@app.get('/movies', tags=['movies'], response_model=List[Movie], status_code=200)
+@app.get('/movies', tags=['movies'], response_model=List[Movie], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_movies() -> List[Movie]:
     return JSONResponse(status_code=200, content=movies)
+
+
+
+
 
 @app.get('/movies/{id}', tags=['movies'], response_model=Movie)
 def get_movie(id: int= Path(ge=1, le=2000)) -> Movie:
