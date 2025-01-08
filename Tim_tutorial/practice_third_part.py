@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 # pydantic validate the incoming data automatically
 
-application = FastAPI()
+appli = FastAPI()
 
 class Person(BaseModel):
     nick_name: str
@@ -14,7 +14,7 @@ class Person(BaseModel):
 persons_intances = {}
 
 # Basic way of posting info:
-@application.post("/persons/")
+@appli.post("/persons/")
 def persons(person: Person):
     return {
         "message": "Person added successfully",
@@ -22,21 +22,27 @@ def persons(person: Person):
     }
 
 # Adding persons details with the person name as a key of the dictionary details:
-@application.post("/add_details_by_person/{person_name}")
+@appli.post("/add_details_by_person/{person_name}")
 def add_details(person_name: str, person: Person):
     persons_intances[person_name] = person
     return persons_intances[person_name]
 
-# This is an endpoint to get (check) the persons I'm posting before (which will be storing on dict persons_instances)
-@application.get("/check_person_posted")
+
+@appli.get("/check_person_by_detail")
 def check_person(nick_name):
     for person in persons_intances:
         if persons_intances[person].nick_name == nick_name:
             return persons_intances[person]
+        
+@appli.get("/get_person_by_name/{name}")
+def get_person_by_name(name: str):
+    return persons_intances[name]
 
-# This is and endpoint to update the details of a person instance
-@application.put("/updating/{person_name}")
+# This is an endpoint to update the details of a person instance
+@appli.put("/updating/{person_name}")
 def updating_person(person_name: str, person: Person):
+    if person_name not in persons_intances:
+        raise HTTPException(status_code=404, detail="That person is not in the database")
     if person.nick_name != None:
         persons_intances[person_name].nick_name = person.nick_name
     if person.age != None:
@@ -47,7 +53,7 @@ def updating_person(person_name: str, person: Person):
     return persons_intances[person_name]
 
 # This endpoint is to delete a person instance
-@application.delete("/deleting/{person_name}")
+@appli.delete("/deleting/{person_name}")
 def deleting_person(person_name: str):
     del persons_intances[person_name]
     return {"Success": "Person deleted!"}
