@@ -25,3 +25,7 @@ To access to the server I type: uvicorn file_name:app_name --reload
 fastapi tutorial: https://fastapi.tiangolo.com/tutorial/first-steps/#operation
 
 
+Request body & Post method:
+We want to create an endpoint where we make a request body.
+We want to inhering data from something is called basemodel. Import BaseModel from pydantic.
+(The data is the information we want to store)
